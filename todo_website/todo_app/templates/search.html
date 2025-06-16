@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Страница поиска
+{% endblock title %}
+
+{% block content %}
+<ul class="list-group my-3 w-75 mx-auto">
+    {% for todo in todos %}
+    <li class="list-group-item d-flex align-items-center" style="height: 50px;">
+        <a href={% url "update_todo" todo.pk "CHANGE_STATUS" %}>
+            {% if todo.is_completed %}
+            <img src={% static 'images/checked.png' %} alt="" >
+            {% else %}
+            <img src={% static 'images/unchecked.png' %} alt="" >
+            {% endif %}
+        </a>
+        <a href="" class="text m-0 mx-2{% if todo.is_completed %} text-decoration-line-through{% else %} text-decoration-none{% endif %}">{{ todo.text }}</a>
+        <div class="ms-auto">
+            <a href={% url "update_todo" todo.pk "DELETE" %}><img src={% static 'images/delete.png' %} alt=""></a>
+            <a href=""><img src={% static 'images/edit.png' %} alt=""></a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

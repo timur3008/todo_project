@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+Обновление To-do
+{% endblock title %}
+
+{% block content %}
+<form method="post" class="d-flex w-75 mx-auto mt-5 column-gap-2 todo_form">
+    {% csrf_token %}
+    {{ form.as_table }}
+
+    <button type="submit" class="btn btn-primary text-center w-25">Обновить</button>
+</form>
+{% endblock content %}

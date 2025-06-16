@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Страница профиля
+{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center"> 
+        <div class="col-md-8 col-lg-6"> 
+            <div class="card shadow-sm rounded-4"> 
+                <div class="card-body text-center"> 
+                    <img src={% static 'images/user.png' %} alt="Аватар" class="rounded-circle mb-3" width="150" height="150"> 
+                    <h4 class="card-title">{{ request.user.first_name }}</h4> 
+                    <h5 class="card-text text-muted">{{ request.user.email }}</h5>
+                    <p class="card-text">{{ request.user.username }}</p>
+                </div> 
+                <ul class="list-group list-group-flush text-start"> 
+                    <li class="list-group-item"><strong>Дата регистрации:</strong> {{ request.user.date_joined }}</li> 
+                    <li class="list-group-item"><strong>Количество всех задач:</strong> <span class="text-primary">{{ total_todos }}</span></li> 
+                    <li class="list-group-item"><strong>Количество завершенных задач:</strong> <span class="text-success">{{ total_completed }}</span></li> 
+                    <li class="list-group-item"><strong>Количество незавершенных задач:</strong> <span class="text-danger">{{ total_pending }}</span></li> 
+                </ul> 
+            </div> 
+        </div> 
+    </div> 
+</div>
+
+<ul class="list-group my-3 w-75 mx-auto">
+    {% for todo in todos %}
+    <li class="list-group-item d-flex align-items-center" style="height: 50px;">
+        <a href={% url "update_todo" todo.pk "CHANGE_STATUS" %}>
+            {% if todo.is_completed %}
+            <img src={% static 'images/checked.png' %} alt="" >
+            {% else %}
+            <img src={% static 'images/unchecked.png' %} alt="" >
+            {% endif %}
+        </a>
+        <a href="" class="text m-0 mx-2{% if todo.is_completed %} text-decoration-line-through{% else %} text-decoration-none{% endif %}">{{ todo.text }}</a>
+        <div class="ms-auto">
+            <a href={% url "update_todo" todo.pk "DELETE" %}><img src={% static 'images/delete.png' %} alt=""></a>
+            <a href={% url "update" todo.pk %}><img src={% static 'images/edit.png' %} alt=""></a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

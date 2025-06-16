@@ -1,0 +1,6 @@
+<form method="post" class="d-flex{% if action != 'Создать' %} flex-column{% endif %} w-75 mx-auto mt-5 {% if action != 'Создать' %}row{% else %}column{% endif %}-gap-2 todo_form">
+    {% csrf_token %}
+    {{ form.as_table }}
+
+    <button type="submit" class="btn btn-primary text-center w-25">{{ action }}</button>
+</form>

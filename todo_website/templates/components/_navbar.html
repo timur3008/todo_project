@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container">
+      <a class="navbar-brand" href={% url "home" %}>TODO</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Сортировать
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item{% if status == 'completed' %} active{% endif %}" href={% url "filter" "completed" %}>По завершенным</a></li>
+                    <li><a class="dropdown-item{% if status == 'pending' %} active{% endif %}" href={% url "filter" "pending" %}>По незавершенным</a></li>
+                    <hr>
+                    <li><a class="dropdown-item" href={% url "home" %}>Показать все</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href={% url "profile" %}>Профиль</a>
+            </li>
+        </ul>
+        <form class="d-flex w-50" role="search" action={% url "search" %}>
+          <input class="form-control me-2" type="search" placeholder="Введите для поиска..." aria-label="Search" name="query" required>
+          <button class="btn btn-outline-primary" type="submit">Искать</button>
+        </form>
+
+        <a href={% url "logout" %} class="btn btn-danger ms-2">Выйти</a>
+      </div>
+    </div>
+</nav>
