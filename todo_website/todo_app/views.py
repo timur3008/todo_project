@@ -8,7 +8,7 @@ from . import models
 
 def render_home_page(request):
     if not request.user.is_authenticated:
-        return redirect('authorization')
+        return redirect('registration')
 
     todos = models.Todo.objects.filter(author=request.user)
 

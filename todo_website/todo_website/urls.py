@@ -20,11 +20,15 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from todo_api.routes import api_router
+# from todo_drf.routes import router
+from todo_drf.routes import urlpatterns as router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('todo_app.urls')),
-    path('', api_router.urls)
+    path('', api_router.urls),
+    path('api-drf/', include('rest_framework.urls')),
+    *router
 ]
 
 if settings.DEBUG:
