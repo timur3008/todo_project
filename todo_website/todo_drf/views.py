@@ -1,15 +1,17 @@
 from rest_framework import permissions, viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpRequest
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
 from drf_yasg.utils import swagger_auto_schema
 
 from todo_app.models import Todo
-from todo_drf.serializers import TodoSerializer
+from todo_drf.serializers import TodoSerializer, UserRegisterSerializer, UserLoginSerializer
 
 
 # class TodoViewSet(viewsets.ModelViewSet):
@@ -138,3 +140,31 @@ class TodoDeleteView(APIView):
         todo = get_object_or_404(Todo, pk=pk, author=request.user)
         todo.delete()
         return Response({'detail': 'Успешно удалено'}, status=status.HTTP_204_NO_CONTENT)
+    
+
+class RegisterView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    @swagger_auto_schema(request_body=UserRegisterSerializer)
+    def post(self, request: HttpRequest):
+        serializer = UserRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    @swagger_auto_schema(request_body=UserLoginSerializer)
+    def post(self, request: HttpRequest):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request=request, username=username, password=password)
+
+        if user:
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        return Response({'error': 'Неверные учётные данные'}, status=status.HTTP_401_UNAUTHORIZED)

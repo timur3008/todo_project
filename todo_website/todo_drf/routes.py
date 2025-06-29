@@ -29,5 +29,7 @@ urlpatterns = [
     path('api-drf/todos/create/', views.TodoCreateView.as_view(), name='todo_create'),
     path('api-drf/update/todos/<int:pk>/', views.TodoUpdateView.as_view(), name='todo_update'),
     path('api-drf/patch/todos/<int:pk>/', views.TodoPatchView.as_view(), name='todo_patch'),
-    path('api-drf/delete/todos/<int:pk>/', views.TodoDeleteView.as_view(), name='todo_delete')
+    path('api-drf/delete/todos/<int:pk>/', views.TodoDeleteView.as_view(), name='todo_delete'),
+    path('api-drf/user/register/', views.RegisterView.as_view(), name='register_user'),
+    path('api-drf/user/login/', views.LoginView.as_view(), name='login_user'),
 ]
